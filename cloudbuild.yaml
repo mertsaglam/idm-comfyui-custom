@@ -1,0 +1,21 @@
+---
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "build"
+      - "-t"
+      - "docker.io/mesames/idm-comfyui-custom:usegoogle"
+      - "."
+    env:
+      - "DOCKER_BUILDKIT=1"
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "login"
+      - "-u"
+      - "$_DOCKER_USERNAME"
+      - "-p"
+      - "$_DOCKER_PASSWORD"
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "push"
+      - "docker.io/mesames/idm-comfyui-custom:usegoogle"

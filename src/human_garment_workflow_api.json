@@ -1,0 +1,147 @@
+{
+    "12": {
+      "inputs": {
+        "weight_dtype": "float16"
+      },
+      "class_type": "PipelineLoader",
+      "_meta": {
+        "title": "Load IDM-VTON Pipeline"
+      }
+    },
+    "14": {
+      "inputs": {
+        "image": "musk.webp",
+        "upload": "image"
+      },
+      "class_type": "LoadImage",
+      "_meta": {
+        "title": "Load Human Image"
+      }
+    },
+    "15": {
+      "inputs": {
+        "image": "shirt.webp",
+        "upload": "image"
+      },
+      "class_type": "LoadImage",
+      "_meta": {
+        "title": "Load Garment Image"
+      }
+    },
+    "21": {
+      "inputs": {
+        "filename_prefix": "try_on",
+        "images": [
+          "35",
+          0
+        ]
+      },
+      "class_type": "SaveImage",
+      "_meta": {
+        "title": "Save Image"
+      }
+    },
+    "27": {
+      "inputs": {
+        "model_name": "sam_hq_vit_h (2.57GB)"
+      },
+      "class_type": "SAMModelLoader (segment anything)",
+      "_meta": {
+        "title": "SAMModelLoader (segment anything)"
+      }
+    },
+    "28": {
+      "inputs": {
+        "model_name": "GroundingDINO_SwinB (938MB)"
+      },
+      "class_type": "GroundingDinoModelLoader (segment anything)",
+      "_meta": {
+        "title": "GroundingDinoModelLoader (segment anything)"
+      }
+    },
+    "29": {
+      "inputs": {
+        "prompt": "blazer",
+        "threshold": 0.3,
+        "sam_model": [
+          "27",
+          0
+        ],
+        "grounding_dino_model": [
+          "28",
+          0
+        ],
+        "image": [
+          "14",
+          0
+        ]
+      },
+      "class_type": "GroundingDinoSAMSegment (segment anything)",
+      "_meta": {
+        "title": "GroundingDinoSAMSegment (segment anything)"
+      }
+    },
+    "31": {
+      "inputs": {
+        "mask": [
+          "29",
+          1
+        ]
+      },
+      "class_type": "MaskToImage",
+      "_meta": {
+        "title": "Convert Mask to Image"
+      }
+    },
+    "33": {
+      "inputs": {
+        "model": "densepose_r50_fpn_dl.torchscript",
+        "cmap": "Parula (CivitAI)",
+        "resolution": 768,
+        "image": [
+          "14",
+          0
+        ]
+      },
+      "class_type": "DensePosePreprocessor",
+      "_meta": {
+        "title": "DensePose Estimator"
+      }
+    },
+    "35": {
+      "inputs": {
+        "garment_description": "a shirt",
+        "negative_prompt": "monochrome, lowres, bad anatomy, worst quality, low quality",
+        "width": 768,
+        "height": 1024,
+        "num_inference_steps": 30,
+        "guidance_scale": 2,
+        "strength": 1,
+        "seed": 42,
+        "pipeline": [
+          "12",
+          0
+        ],
+        "human_img": [
+          "14",
+          0
+        ],
+        "pose_img": [
+          "33",
+          0
+        ],
+        "mask_img": [
+          "31",
+          0
+        ],
+        "garment_img": [
+          "15",
+          0
+        ]
+      },
+      "class_type": "IDM-VTON",
+      "_meta": {
+        "title": "Run IDM-VTON Inference"
+      }
+    }
+  }
