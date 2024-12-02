@@ -12,9 +12,9 @@ steps:
     args:
       - "login"
       - "-u"
-      - "$_DOCKER_USERNAME"
+      - "$_DOCKER_HUB_USERNAME"
       - "-p"
-      - "$_DOCKER_PASSWORD"
+      - "$_DOCKER_HUB_TOKEN"
   - name: "gcr.io/cloud-builders/docker"
     args:
       - "push"
